@@ -69,3 +69,20 @@ CREATE TABLE IF NOT EXISTS OverseasData (
     PRIMARY KEY (LocationID, DataYear, DataMonth, DataDay),
 );
 """  
+
+# Before we insert into the table, we need to get the right
+# IDs for the foreign keys.
+
+"""--pseudo-sql
+SELECT locID FROM locs WHERE locName = ?
+SELECT unID FROM Beauf WHERE unitname = ?
+SELECT unID FROM Card WHERE unitname = ?
+SELECT unID FROM Card WHERE unitname = ?
+"""
+
+"""--pseudo-python
+for table in localdata:
+    cursor.execute(\"""--sql
+        INSERT INTO LocalData VALUES 
+    \""")
+"""
