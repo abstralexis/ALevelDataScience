@@ -10,4 +10,4 @@ actix-web = "4.3.1"
 chrono = "0.4.26"
 csv = "1.2.2"
 serde = { version = "1.0.163", features = ["derive"] }
-sqlx = { version = "0.6.3", features = ["runtime-actix", "sqlite"] }
+sqlx = { version = "0.6.3", features = ["sqlite", "runtime-actix-rustls"] }
