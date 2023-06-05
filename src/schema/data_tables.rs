@@ -28,7 +28,7 @@ pub struct OverseasData {
     pub date: NaiveDate,
     pub mean_air_temp_c: Uf32,
     pub total_rainfall_mm: Option<Uf32>,
-    pub mean_pressure_hpa: u32,
+    pub mean_pressure_hpa: u32, // TODO: evaluate possible constraint
     pub mean_windspeed_kn: Option<u32>,
     pub mean_windspeed_bft: Option<Beaufort>,
 }
