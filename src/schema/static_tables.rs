@@ -9,7 +9,7 @@
 /// key to it's location name. This is to minimise data
 /// duplication, as we are not implementing a new table
 /// for each location although it may be more normalised.
-pub struct LocationName {
+pub struct Location {
     /// The **primary key**
     id: u32,
     /// The name for the location. This is required,
