@@ -14,7 +14,7 @@ pub struct Location {
     id: u32,
     /// The name for the location. This is required,
     /// hence it is `Name` and not `Option<Name>`.
-    name: Name
+    name: Name,
 }
 
 /// This enum represents the names of locations that are
@@ -32,13 +32,13 @@ pub enum Name {
 }
 
 /// The Beaufort Unit type for the database. Holds a `u8`
-/// for the **primary key** (`id`), and an `Option` for 
-/// the Beaufort Scale conversion enum. 
+/// for the **primary key** (`id`), and an `Option` for
+/// the Beaufort Scale conversion enum.
 pub struct BeaufortUnit {
     /// The **primary key**
     pub id: u32,
-    /// `Option` models the table's "n/a" values as 
-    /// `Option::None`, and the breeze conversions are 
+    /// `Option` models the table's "n/a" values as
+    /// `Option::None`, and the breeze conversions are
     /// `Some<Beaufort>`.
     pub unit: Option<Beaufort>,
 }
@@ -65,7 +65,7 @@ pub type Cardinal3 = (Direction, Option<Direction>, Option<Direction>);
 /// This direction is composed of a tuple, containing at least
 /// one primary cardinal direction, and then another two optionals.
 /// This represents variants like N, SW, and ESE for example.
-/// 
+///
 /// Note: **This does _NOT_ account for possible logically invalid
 /// directions such as: EEE, NS, WEN, etc.** For now, for simplicity,
 /// I am forgoing this possibility of invalid state as I think we can
@@ -84,6 +84,6 @@ pub enum Direction {
     S,
     E,
     W,
-} 
+}
 
 // TODO: add some function for safely constructing a Cardinal3

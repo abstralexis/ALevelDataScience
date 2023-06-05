@@ -3,5 +3,5 @@
 //! in this database. This allows for using SQLX in a more
 //! ORM-like manner, just more manual.
 
-pub mod static_tables; 
 pub mod data_tables;
+pub mod static_tables;
