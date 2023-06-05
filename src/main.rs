@@ -5,5 +5,5 @@ mod schema;
 use schema::*;
 
 fn main() {
-    println!("Hello, world!");
+    println!("Hello, world!"); 
 }

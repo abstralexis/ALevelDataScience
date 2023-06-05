@@ -84,6 +84,6 @@ pub enum Direction {
     S,
     E,
     W,
-}
+} 
 
 // TODO: add some function for safely constructing a Cardinal3
