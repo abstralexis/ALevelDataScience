@@ -3,8 +3,6 @@
 //! for optimisation using foreign integer keys as integers
 //! are smaller than VarChars. The types
 
-use chrono::Local;
-
 pub trait Name {}
 
 /// This enum represents the names of locations that are
