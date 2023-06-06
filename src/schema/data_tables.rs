@@ -1,5 +1,5 @@
 use super::static_tables::*;
-use crate::utils::{float_hours::DayHours, uf32::Uf32};
+use crate::utils::{float_hours::DayHours, percentage::UPercent100, uf32::Uf32};
 use chrono::NaiveDate;
 
 /// The `LocationData` trait has a method for getting
@@ -24,8 +24,8 @@ pub struct LocalData {
     pub mean_windspeed_kn: Option<u32>,
     pub mean_windspeed_bft: Option<Beaufort>,
     pub max_gust_kn: Option<u32>,
-    pub max_humidity_percent: Option<u32>, // TODO: constrain to 0..=100
-    pub mean_cloud_oktas: Option<u32>,     // TODO: constrain to 0..=8
+    pub max_humidity_percent: Option<UPercent100>,
+    pub mean_cloud_oktas: Option<u32>, // TODO: constrain to 0..=8
     pub mean_visibility_dm: Option<u32>,
     pub mean_pressure_hpa: Option<u32>,
     pub mean_wind_dir_deg: Option<u32>, // TODO: constrain to 0..=360
