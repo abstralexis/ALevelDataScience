@@ -2,6 +2,19 @@
 //! assures that the value is positive. `Uf32` is immutable, and can only
 //! be constructed or destructed for `f32`.
 
+use std::{error, fmt::Display};
+
+#[derive(Debug, Clone)]
+pub struct NegativeFloatError;
+
+impl Display for NegativeFloatError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Cannot construct a Uf32 from a negative value.")
+    }
+}
+
+impl error::Error for NegativeFloatError {}
+
 /// `Uf32` is a wrapper type around an `f32`, such that the `f32` is known to be
 /// greater than or equal to `0_f32`. `Uf32` is always immutable.
 ///
@@ -25,14 +38,11 @@ pub struct Uf32 {
 }
 
 impl TryFrom<f32> for Uf32 {
-    type Error = String;
+    type Error = NegativeFloatError;
 
     fn try_from(value: f32) -> Result<Self, Self::Error> {
         if value < 0.0 {
-            Err(format!(
-                "Uf32 cannot be negative; {:?} is less than 0.",
-                value
-            ))
+            Err(NegativeFloatError)
         } else {
             Ok(Self { value })
         }
