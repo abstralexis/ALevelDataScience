@@ -44,22 +44,22 @@ impl ToSql<Location, Sqlite> for LocationNames {
     }
 }
 
-impl FromSql<Location, Sqlite> for LocationNames {
-    fn from_sql(value: SqliteValue<'_, '_, '_>) -> deserialize::Result<Self> {
-        use LocationNames::*;
+// impl FromSql<Location, Sqlite> for LocationNames {
+//     fn from_sql(value: SqliteValue<'_, '_, '_>) -> deserialize::Result<Self> {
+//         use LocationNames::*;
 
         
 
-        match value.into() {
-            "foo" => Ok(Beijing),
-            "bar" => Ok(Camborne),
-            "heathrow" => Ok(Heathrow),
-            "hurn" => Ok(Hurn),
-            "jacksonville" => Ok(Jacksonville),
-            "leeming" => Ok(Leeming),
-            "leuchars" => Ok(Leuchars),
-            "perth" => Ok(Perth),
-            _ => Err("Unrecognised location name".into())
-        }
-    }
-} 
+//         match value.into() {
+//             "foo" => Ok(Beijing),
+//             "bar" => Ok(Camborne),
+//             "heathrow" => Ok(Heathrow),
+//             "hurn" => Ok(Hurn),
+//             "jacksonville" => Ok(Jacksonville),
+//             "leeming" => Ok(Leeming),
+//             "leuchars" => Ok(Leuchars),
+//             "perth" => Ok(Perth),
+//             _ => Err("Unrecognised location name".into())
+//         }
+//     }
+// } 
