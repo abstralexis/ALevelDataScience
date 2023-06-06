@@ -1,47 +1,33 @@
 //! This module represents the types for the values in
 //! the static tables of the database, e.g. unit names to
 //! for optimisation using foreign integer keys as integers
-//! are smaller than VarChars.
+//! are smaller than VarChars. The types
 
-/// Represents the value in the database that is stored
-/// for the location of the data. This means that the data
-/// will be stored in one large table but with a foreign
-/// key to it's location name. This is to minimise data
-/// duplication, as we are not implementing a new table
-/// for each location although it may be more normalised.
-pub struct Location {
-    /// The **primary key**
-    id: u32,
-    /// The name for the location. This is required,
-    /// hence it is `Name` and not `Option<Name>`.
-    name: Name,
-}
+use chrono::Local;
+
+pub trait Name {}
 
 /// This enum represents the names of locations that are
-/// in the LDS. This is primarily accessed through use of
-/// the `LocationName` struct.
-pub enum Name {
-    Beijing,
+/// in the LDS for the local data.
+#[derive(Debug, Clone, Copy)]
+pub enum LocalName {
     Camborne,
     Heathrow,
     Hurn,
-    Jacksonville,
     Leeming,
     Leuchars,
+}
+impl Name for LocalName {}
+
+/// This enum represents the names of locations that are
+/// in the LDS for overseas data.
+#[derive(Debug, Clone, Copy)]
+pub enum OverseasName {
+    Beijing,
+    Jacksonville,
     Perth,
 }
-
-/// The Beaufort Unit type for the database. Holds a `u8`
-/// for the **primary key** (`id`), and an `Option` for
-/// the Beaufort Scale conversion enum.
-pub struct BeaufortUnit {
-    /// The **primary key**
-    pub id: u32,
-    /// `Option` models the table's "n/a" values as
-    /// `Option::None`, and the breeze conversions are
-    /// `Some<Beaufort>`.
-    pub unit: Option<Beaufort>,
-}
+impl Name for OverseasName {}
 
 /// This enum outlines the Beaufort unit conversions. It is
 /// discrete and empirical. **This enum only covers the
@@ -56,12 +42,6 @@ pub enum Beaufort {
     Strong,
 }
 
-/// The cardinal direction type. Models `r#[NSEW]{1, 3}`.
-/// This does **NOT** exclude logically invalid directions.
-pub type Cardinal3 = (Direction, Option<Direction>, Option<Direction>);
-
-/// This is the struct to represent the CardinalDirection
-/// table. It has an id **primary key** and a direction.
 /// This direction is composed of a tuple, containing at least
 /// one primary cardinal direction, and then another two optionals.
 /// This represents variants like N, SW, and ESE for example.
@@ -70,13 +50,7 @@ pub type Cardinal3 = (Direction, Option<Direction>, Option<Direction>);
 /// directions such as: EEE, NS, WEN, etc.** For now, for simplicity,
 /// I am forgoing this possibility of invalid state as I think we can
 /// safely assume that the directions provided in the LDS are valid.
-pub struct CardinalDirection {
-    /// The **primary key**
-    pub id: u32,
-
-    /// Use the Cardinal3 direction type.
-    direction: Cardinal3,
-}
+pub type Cardinal3 = (Direction, Option<Direction>, Option<Direction>);
 
 /// The cardinal direction enum, for NSEW.
 pub enum Direction {
