@@ -7,8 +7,6 @@
 mod schema;
 mod utils;
 
-use utils::uf32::Uf32;
-
 fn main() {
     print!("Hello World!");
 }
