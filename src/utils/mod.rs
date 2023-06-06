@@ -2,4 +2,5 @@
 //! types that wrap values for abstracting range checking
 //! such as `uf32::Uf32`.
 
+pub mod float_hours;
 pub mod uf32;
