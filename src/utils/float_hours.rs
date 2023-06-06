@@ -1,7 +1,7 @@
 //! This file contains a type for a number of hours as a
 //! float, that is between 0 and 24.
 
-use std::{error::Error, fmt::Display};
+use std::{error, fmt::Display};
 
 /// This Error represents that the hours provided to `DayHours`
 /// is not in the 24 hour range. Implements `std::error::Error`.
@@ -14,27 +14,29 @@ impl Display for HoursNotInDay {
     }
 }
 
-impl Error for HoursNotInDay {}
+impl error::Error for HoursNotInDay {}
 
 /// This is a type that contains an `f32` that is verified to
-/// be in the range 0 to 24 inclusive.
+/// be in the range 0 to 24 inclusive. It can be constructed
+/// using `try_from(value: f32)`, and can be destructed to
+/// an `f32` with `from(value: DayHours)`. `
 pub struct DayHours {
     hours: f32,
 }
 
-impl DayHours {
-    /// Construct a new value, verifying the value is in the
-    /// correct range for a 24 hour day.
-    pub fn new(hours: f32) -> Result<Self, Box<dyn Error>> {
-        match (0_f32..=24_f32).contains(&hours) {
-            false => Err(Box::new(HoursNotInDay)),
-            true => Ok(Self { hours: hours }),
+impl TryFrom<f32> for DayHours {
+    type Error = HoursNotInDay;
+
+    fn try_from(value: f32) -> Result<Self, Self::Error> {
+        match (0_f32..=24_f32).contains(&value) {
+            false => Err(HoursNotInDay),
+            true => Ok(Self { hours: value }),
         }
     }
 }
 
-impl Into<f32> for DayHours {
-    fn into(self) -> f32 {
-        self.hours
+impl From<DayHours> for f32 {
+    fn from(value: DayHours) -> Self {
+        value.hours
     }
 }
