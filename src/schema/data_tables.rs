@@ -1,5 +1,7 @@
 use super::static_tables::*;
-use crate::utils::{float_hours::DayHours, oktas::Oktas, percentage::UPercent100, uf32::Uf32};
+use crate::utils::{
+    degrees::UDegree360, float_hours::DayHours, oktas::Oktas, percentage::UPercent100, uf32::Uf32,
+};
 use chrono::NaiveDate;
 
 /// The `LocationData` trait has a method for getting
@@ -28,9 +30,9 @@ pub struct LocalData {
     pub mean_cloud_oktas: Option<Oktas>,
     pub mean_visibility_dm: Option<u32>,
     pub mean_pressure_hpa: Option<u32>,
-    pub mean_wind_dir_deg: Option<u32>, // TODO: constrain to 0..=360
+    pub mean_wind_dir_deg: Option<UDegree360>,
     pub mean_wind_dir_cardinal: Option<Cardinal3>,
-    pub max_gust_dir_deg: Option<u32>, // TODO: constrain to 0..=360
+    pub max_gust_dir_deg: Option<UDegree360>,
     pub max_gust_dir_cardinal: Option<Cardinal3>,
 }
 impl LocationData for LocalData {

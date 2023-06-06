@@ -2,6 +2,7 @@
 //! types that wrap values for abstracting range checking
 //! such as `uf32::Uf32`.
 
+pub mod degrees;
 pub mod float_hours;
 pub mod oktas;
 pub mod percentage;
