@@ -9,5 +9,7 @@ edition = "2021"
 actix-web = "4.3.1"
 chrono = "0.4.26"
 csv = "1.2.2"
+handlebars = { version = "4.3.7", features = ["dir_source"] }
 serde = { version = "1.0.163", features = ["derive"] }
+serde_json = "1.0.96"
 sqlx = { version = "0.6.3", features = ["sqlite", "runtime-actix-rustls"] }
