@@ -1,5 +1,5 @@
 use super::static_tables::*;
-use crate::utils::{
+use crate::types::{
     degrees::UDegree360, float_hours::DayHours, oktas::Oktas, percentage::UPercent100, uf32::Uf32,
 };
 use chrono::NaiveDate;

@@ -1,6 +1,6 @@
-//! The `utils` module contains utils for the program. For example,
+//! The `types` module contains types for the program. For example,
 //! types that wrap values for abstracting range checking
-//! such as `uf32::Uf32`.
+//! such as `uf32::Uf32`, and form handling types.
 
 pub mod degrees;
 pub mod float_hours;
