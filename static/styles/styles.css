@@ -1,4 +1,14 @@
 body {
-    background-color: antiquewhite;
     color: black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+div {
+    background-color: antiquewhite;
+}
+
+footer {
+    width: 100%;
+    background-color: rosybrown;
+    color: white;
 }

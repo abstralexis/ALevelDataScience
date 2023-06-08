@@ -44,10 +44,12 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(hb_ref.clone())
-            .service(fs::Files::new("/static/styles/", ".").show_files_listing())
             .service(index)
             .service(sayhello)
-            
+            .service(
+                fs::Files::new("/static", "./static")
+                    .show_files_listing()
+            )
     })
         .bind(("127.0.0.1", 8080))?
         .run()
