@@ -7,6 +7,7 @@
 mod schema;
 mod types;
 
+use actix_files as fs;
 use actix_web::{get, web, App, HttpServer, Responder, HttpResponse};
 use handlebars::Handlebars;
 use serde_json::json;
@@ -43,11 +44,12 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(hb_ref.clone())
+            .service(fs::Files::new("/static/styles/", ".").show_files_listing())
             .service(index)
             .service(sayhello)
             
     })
-        .bind(("127.0.0.1", 8002))?
+        .bind(("127.0.0.1", 8080))?
         .run()
         .await
 }
