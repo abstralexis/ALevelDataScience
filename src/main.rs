@@ -33,6 +33,20 @@ async fn sayhello(hb: web::Data<Handlebars<'_>>, path: web::Path<(String)>) -> i
     HttpResponse::Ok().body(body)
 }
 
+#[get("view/{location}/{year}")]
+async fn view(hb: web::Data<Handlebars<'_>>, path: web::Path<(String, String)>) -> impl Responder {
+    let (location, year) = path.into_inner();
+    let data = json!(
+        {
+            "location": location,
+            "year": year
+        }
+    );
+
+    let body = hb.render("view", &data).unwrap();
+    HttpResponse::Ok().body(body)
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     print!("Starting server...");
@@ -46,6 +60,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(hb_ref.clone())
             .service(index)
             .service(sayhello)
+            .service(view)
             .service(
                 fs::Files::new("/static", "./static")
                     .show_files_listing()
