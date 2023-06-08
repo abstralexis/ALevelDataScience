@@ -1,14 +1,23 @@
 body {
     color: black;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
 }
 
 div {
-    background-color: antiquewhite;
+    background-color: pink;
+}
+
+nav {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: skyblue;
 }
 
 footer {
     width: 100%;
-    background-color: rosybrown;
+    background-color: skyblue;
     color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
