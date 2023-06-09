@@ -1,8 +1,8 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 
-<html lang="en">
+<html>
     <head>
-        <title>Alexis' Data Science Project</title>
+        <title>Search the Database</title>
         <meta charset="utf-8">
         <meta name="viewport" content= "width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="static/styles/styles.css">
@@ -10,9 +10,9 @@
 
     <body>
         <nav>
-            <a href=/search>
-                <img src="https://cdn-icons-png.flaticon.com/512/3031/3031293.png" width="15">
-                Search Data
+            <a href="/">
+                <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" width="15">
+                Home
             </a>
             &emsp;
             <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjPuaXWw7P_AhWSWcAKHdUxAnQQFnoECAgQAQ&url=https%3A%2F%2Fqualifications.pearson.com%2Fcontent%2Fdam%2Fpdf%2FA%2520Level%2FMathematics%2F2017%2Fspecification-and-sample-assesment%2FPearson%2520Edexcel%2520GCE%2520AS%2520and%2520AL%2520Mathematics%2520data%2520set%2520-%2520Issue%25201%2520(1).xls&usg=AOvVaw1sTqT6hcUEIGHaOitTEZ5a">
@@ -20,23 +20,26 @@
                 Download Large Data Set (Edexcel)
             </a>
         </nav>
+        <br>
 
         <div align="center">
-            <h1>Welcome to my Data Science project!</h1>
+            <h1>
+                What data would you like to search for?
+            </h1>
 
-            <p> 
-                This is my A-Level Computer Science 
-                Data Science project. This website will
-                be useful for presenting the data from
-                the Edexcel A-Level Maths Large Data Set. 
-            </p>
+            <br>
 
-            <p>
-                Bello
-            </p>
-
-            <img src="static/img/trolfase.png" class="img-content">
+            <form action="search/submit" method="post">
+                <label for="location">Location</label>
+                <input type="text" name="location" required>
+                <label for="year">Year</label>
+                <input type="number" min="1900" max="2100" step="1" name="year" required>
+                <br><br>
+                <input type="submit" name="submit" value="Submit">
+                <br><br>
+            </form>
         </div>
+
         <br>
         <footer>
             Data &copy; 2016 Crown Copyright Met Office

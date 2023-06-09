@@ -8,9 +8,21 @@ mod schema;
 mod types;
 
 use actix_files as fs;
-use actix_web::{get, web, App, HttpServer, Responder, HttpResponse};
+use actix_web::{get, post, web, App, HttpServer, Responder, HttpResponse};
 use handlebars::Handlebars;
+use serde::{Serialize, Deserialize};
 use serde_json::json;
+
+#[derive(Serialize, Deserialize)]
+pub struct SearchForm {
+    location: String,
+    year: u32,
+}
+
+#[post("search/submit")]
+async fn search_submit(hb: web::Data<Handlebars<'_>>, form: web::Form<SearchForm>) -> impl Responder {
+    web::Redirect::to(format!("/view/{0}/{1}", form.location, form.year)).see_other()
+}
 
 #[get("/")]
 async fn index(hb: web::Data<Handlebars<'_>>) -> impl Responder {
@@ -29,6 +41,15 @@ async fn sayhello(hb: web::Data<Handlebars<'_>>, path: web::Path<(String)>) -> i
     );
 
     let body = hb.render("sayhello", &data).unwrap();
+
+    HttpResponse::Ok().body(body)
+}
+
+#[get("search")]
+async fn search(hb: web::Data<Handlebars<'_>>) -> impl Responder {
+    let data = json!({});
+
+    let body = hb.render("search", &data).unwrap();
 
     HttpResponse::Ok().body(body)
 }
@@ -61,6 +82,8 @@ async fn main() -> std::io::Result<()> {
             .service(index)
             .service(sayhello)
             .service(view)
+            .service(search)
+            .service(search_submit)
             .service(
                 fs::Files::new("/static", "./static")
                     .show_files_listing()
