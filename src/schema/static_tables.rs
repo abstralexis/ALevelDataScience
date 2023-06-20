@@ -3,9 +3,7 @@
 //! for optimisation using foreign integer keys as integers
 //! are smaller than VarChars. The types
 
-use std::{fmt::Display, error::Error};
-
-
+use std::{error::Error, fmt::Display};
 
 pub trait Name {}
 
@@ -83,34 +81,38 @@ pub fn validate_cardinal3(direction: Cardinal3) -> Result<Cardinal3, InvalidCard
     let initial = direction.0;
     let ret: Result<Cardinal3, InvalidCardinal>;
     match initial {
-        N | S => { // N... | S...
+        N | S => {
+            // N... | S...
             match direction.1 {
                 None => ret = Ok(direction), // N | S
                 Some(second) => {
                     match second {
-                        initial => { // NN... | SS...
+                        initial => {
+                            // NN... | SS...
                             match direction.2 {
                                 None => ret = Err(InvalidCardinal), // NN | SS
                                 Some(last) => {
                                     match last {
-                                        E | W => ret = Ok(direction), // NNE | NNW |SSE |SSW
+                                        E | W => ret = Ok(direction),    // NNE | NNW |SSE |SSW
                                         _ => ret = Err(InvalidCardinal), // NNN | SSS
                                     }
                                 }
                             }
-                        },
-                        E | W => { // NE... | SE... | NW... | SW...
+                        }
+                        E | W => {
+                            // NE... | SE... | NW... | SW...
                             match direction.2 {
-                                None => ret = Ok(direction), // NE | SE | NW | SW |
+                                None => ret = Ok(direction),           // NE | SE | NW | SW |
                                 Some(_) => ret = Err(InvalidCardinal), // NE... | SE... | NW... | SW...
                             }
-                        },
+                        }
                         _ => ret = Err(InvalidCardinal),
                     }
                 }
             }
-        },
-        E | W => { // E... | S...
+        }
+        E | W => {
+            // E... | S...
             match direction.1 {
                 None => ret = Ok(direction), // E | W
                 Some(second) => {
@@ -121,17 +123,17 @@ pub fn validate_cardinal3(direction: Cardinal3) -> Result<Cardinal3, InvalidCard
                                 None => ret = Err(InvalidCardinal), // EN | ES | WN | WS
                                 Some(last) => {
                                     match last {
-                                        initial => ret = Ok(direction), // ESE | ENE | WSW | WNW
-                                        _  => ret = Err(InvalidCardinal), // ESS | ESN | ESW | WSS | WSN | WSE
+                                        initial => ret = Ok(direction),  // ESE | ENE | WSW | WNW
+                                        _ => ret = Err(InvalidCardinal), // ESS | ESN | ESW | WSS | WSN | WSE
                                     }
-                                },
+                                }
                             }
-                        },
+                        }
                         _ => ret = Err(InvalidCardinal), // EW | WE
                     }
-                },
+                }
             }
-        },
+        }
     }
     ret
 }

@@ -8,9 +8,9 @@ mod schema;
 mod types;
 
 use actix_files as fs;
-use actix_web::{get, post, web, App, HttpServer, Responder, HttpResponse};
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use handlebars::Handlebars;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 
 #[derive(Serialize, Deserialize)]
@@ -20,7 +20,10 @@ pub struct SearchForm {
 }
 
 #[post("search/submit")]
-async fn search_submit(hb: web::Data<Handlebars<'_>>, form: web::Form<SearchForm>) -> impl Responder {
+async fn search_submit(
+    hb: web::Data<Handlebars<'_>>,
+    form: web::Form<SearchForm>,
+) -> impl Responder {
     web::Redirect::to(format!("/view/{0}/{1}", form.location, form.year)).see_other()
 }
 
@@ -34,11 +37,7 @@ async fn index(hb: web::Data<Handlebars<'_>>) -> impl Responder {
 #[get("sayhello/{name}")]
 async fn sayhello(hb: web::Data<Handlebars<'_>>, path: web::Path<(String)>) -> impl Responder {
     let name = path.into_inner();
-    let data = json!(
-        {
-            "name": name
-        }
-    );
+    let data = json!({ "name": name });
 
     let body = hb.render("sayhello", &data).unwrap();
 
@@ -73,7 +72,8 @@ async fn main() -> std::io::Result<()> {
     print!("Starting server...");
 
     let mut hb = Handlebars::new();
-    hb.register_templates_directory(".html", "./static/templates/").unwrap();
+    hb.register_templates_directory(".html", "./static/templates/")
+        .unwrap();
     let hb_ref = web::Data::new(hb);
 
     HttpServer::new(move || {
@@ -84,12 +84,9 @@ async fn main() -> std::io::Result<()> {
             .service(view)
             .service(search)
             .service(search_submit)
-            .service(
-                fs::Files::new("/static", "./static")
-                    .show_files_listing()
-            )
+            .service(fs::Files::new("/static", "./static").show_files_listing())
     })
-        .bind(("127.0.0.1", 8080))?
-        .run()
-        .await
+    .bind(("127.0.0.1", 8080))?
+    .run()
+    .await
 }
