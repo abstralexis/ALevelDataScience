@@ -4,7 +4,8 @@
 //! are smaller than VarChars. The types
 
 use std::{error::Error, fmt::Display};
-
+use regex::Regex;
+use anyhow;
 pub trait Name {}
 
 /// This enum represents the names of locations that are
@@ -52,6 +53,23 @@ pub enum Beaufort {
 /// safely assume that the directions provided in the LDS are valid.
 pub type Cardinal3 = (Direction, Option<Direction>, Option<Direction>);
 
+fn c3_to_string(direction: Cardinal3) -> String {
+    let mut string = String::new();     // Container for string
+    string.push_str(&direction.0.to_string());    // Push first item
+    // Handle the optional directions
+    match direction.1 {
+        None => return string,
+        Some(s) => {
+            string.push_str(&s.to_string());
+            match direction.2 {
+                None => return string,
+                Some(s) => string.push_str(&s.to_string()),
+            }
+        }
+    }
+    string
+}
+
 /// The cardinal direction enum, for NSEW.
 #[derive(Debug, Clone, Copy)]
 pub enum Direction {
@@ -62,6 +80,17 @@ pub enum Direction {
 }
 
 use Direction::*;
+
+impl ToString for Direction {
+    fn to_string(&self) -> String {
+        match *self {
+            N => "N".to_string(),
+            S => "S".to_string(),
+            E => "E".to_string(),
+            W => "W".to_string(),
+        }
+    }
+}
 
 #[derive(Debug, Clone)]
 pub struct InvalidCardinal;
@@ -77,63 +106,17 @@ impl Error for InvalidCardinal {}
 // There was no real reason for me *not* to make a way to destructure a Cardinal3 to a String
 // and regex it for validity. My head and hands hurt.
 /// This validates a Cardinal3 - if valid it returns the cardinal. Else, an Error.
-pub fn validate_cardinal3(direction: Cardinal3) -> Result<Cardinal3, InvalidCardinal> {
-    let initial = direction.0;
-    let ret: Result<Cardinal3, InvalidCardinal>;
-    match initial {
-        N | S => {
-            // N... | S...
-            match direction.1 {
-                None => ret = Ok(direction), // N | S
-                Some(second) => {
-                    match second {
-                        initial => {
-                            // NN... | SS...
-                            match direction.2 {
-                                None => ret = Err(InvalidCardinal), // NN | SS
-                                Some(last) => {
-                                    match last {
-                                        E | W => ret = Ok(direction),    // NNE | NNW |SSE |SSW
-                                        _ => ret = Err(InvalidCardinal), // NNN | SSS
-                                    }
-                                }
-                            }
-                        }
-                        E | W => {
-                            // NE... | SE... | NW... | SW...
-                            match direction.2 {
-                                None => ret = Ok(direction),           // NE | SE | NW | SW |
-                                Some(_) => ret = Err(InvalidCardinal), // NE... | SE... | NW... | SW...
-                            }
-                        }
-                        _ => ret = Err(InvalidCardinal),
-                    }
-                }
-            }
-        }
-        E | W => {
-            // E... | S...
-            match direction.1 {
-                None => ret = Ok(direction), // E | W
-                Some(second) => {
-                    match second {
-                        initial => ret = Err(InvalidCardinal), // EE... | WW...
-                        N | S => {
-                            match direction.2 {
-                                None => ret = Err(InvalidCardinal), // EN | ES | WN | WS
-                                Some(last) => {
-                                    match last {
-                                        initial => ret = Ok(direction),  // ESE | ENE | WSW | WNW
-                                        _ => ret = Err(InvalidCardinal), // ESS | ESN | ESW | WSS | WSN | WSE
-                                    }
-                                }
-                            }
-                        }
-                        _ => ret = Err(InvalidCardinal), // EW | WE
-                    }
-                }
-            }
-        }
+pub fn validate_cardinal3(direction: Cardinal3) -> anyhow::Result<Cardinal3> {
+    // I lost my nice generic regex notes so have this huzzah !
+    match match direction.0 {
+        // Using anyhow because I don't wanna deal with Box<dyn std::error::Error>
+        // and calling ? on the regex is just to satisfy the compiler, it's known to work.
+        N => Regex::new("^N([EW]|N[EW])?")?.is_match(&c3_to_string(direction)),
+        S => Regex::new("^S([EW]|S[EW])?")?.is_match(&c3_to_string(direction)),
+        E => Regex::new("^E([NS]E)?")?.is_match(&c3_to_string(direction)),
+        W => Regex::new("^W([NS]W)?")?.is_match(&c3_to_string(direction)),
+    } {
+        true => Ok(direction),
+        false => Err(InvalidCardinal.into())
     }
-    ret
 }
