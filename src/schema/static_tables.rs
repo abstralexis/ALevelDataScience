@@ -53,6 +53,7 @@ pub enum Beaufort {
 /// safely assume that the directions provided in the LDS are valid.
 pub type Cardinal3 = (Direction, Option<Direction>, Option<Direction>);
 
+/// Converts a Cardinal3 to a String
 fn c3_to_string(direction: Cardinal3) -> String {
     let mut string = String::new();     // Container for string
     string.push_str(&direction.0.to_string());    // Push first item
