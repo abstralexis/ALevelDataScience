@@ -104,13 +104,11 @@ impl Display for InvalidCardinal {
 
 impl Error for InvalidCardinal {}
 
-// There was no real reason for me *not* to make a way to destructure a Cardinal3 to a String
-// and regex it for validity. My head and hands hurt.
 /// This validates a Cardinal3 - if valid it returns the cardinal. Else, an Error.
 pub fn validate_cardinal3(direction: Cardinal3) -> anyhow::Result<Cardinal3> {
-    // I lost my nice generic regex notes so have this huzzah !
+    // I lost my nice generic regex notes so this will do for now.
     match match direction.0 {
-        // Using anyhow because I don't wanna deal with Box<dyn std::error::Error>
+        // Using anyhow because I don't want to deal with Box<dyn std::error::Error>
         // and calling ? on the regex is just to satisfy the compiler, it's known to work.
         N => Regex::new("^N([EW]|N[EW])?")?.is_match(&c3_to_string(direction)),
         S => Regex::new("^S([EW]|S[EW])?")?.is_match(&c3_to_string(direction)),
