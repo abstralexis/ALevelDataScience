@@ -1,7 +1,7 @@
 //! This module represents the types for the values in
 //! the static tables of the database, e.g. unit names to
 //! for optimisation using foreign integer keys as integers
-//! are smaller than VarChars. The types
+//! are smaller than VarChars.
 
 use std::{error::Error, fmt::Display};
 use regex::Regex;
